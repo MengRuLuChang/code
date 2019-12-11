@@ -2,7 +2,7 @@
  * @Author: ding yipeng 
  * @Date: 2019-12-10 11:11:56 
  * @Last Modified by: ding yipeng
- * @Last Modified time: 2019-12-10 15:48:28
+ * @Last Modified time: 2019-12-11 14:54:39
  */
 /* 判断对象的数据类型 */
 /* 函数柯里化
@@ -44,17 +44,24 @@ console.log(isArray([]))
 /* 
 Array.prototype.slice.call(arguments)能将具有length属性的对象转成数组,把调用方法的参数截取出来，
 call了后，就是把当前函数推入所传参数的作用域中去了，我所理解的不知道对不对，反正this就指向所传进去的对象就完事了
+对于 call的理解
+
+
 
 */
-
+/* 值得一提的是，map 的第二个参数为第一个参数回调中的 this 指向，如果第一个参数为箭头函数，
+那设置第二个 this 会因为箭头函数的词法绑定而失效 */
 
 const selfMap = function (fn, context) {
   let arr = Array.prototype.slice.call(this)
   let mappedArr = Array()
+  console.log('this==>', fn, this, context)
   for (let i = 0; i < arr.length; i++) {
     //判断稀疏数组的情况
     if (!arr.hasOwnProperty(i)) continue
     mappedArr[i] = fn.call(context, arr[i], i, this)
+    console.log('fn.call', context, arr[i], i, this)
+
   }
   return mappedArr
 }
